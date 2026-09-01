@@ -1,13 +1,40 @@
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar";
+import Hero from "./components/Hero";
+import Projects from "./components/Projects";
+import Contact from "./components/Contact";
+import BlogPage from "./pages/BlogPage";
+import BlogForm from "./pages/BlogForm";
+import BlogPost from "./pages/BlogPost";
 
 function App() {
   return (
-    <div>
-      <Navbar />
-      <h1 className="text-3xl font-bold underline text-blue-600">
-        Hello Tailwind + React + TypeScript!
-      </h1>
-    </div>
+    <Router>
+      <div className="bg-background min-h-screen text-text">
+        <Navbar />
+        <Routes>
+          {/* Main Landing Page */}
+          <Route
+            path="/"
+            element={
+              <>
+                <Hero />
+                <section id="about" className="h-screen flex items-center justify-center">
+                  <h1 className="text-4xl font-bold text-secondary">About Section</h1>
+                </section>
+                <Projects />
+                <Contact />
+              </>
+            }
+          />
+
+          {/* Blog Page */}
+          <Route path="/blog" element={<BlogPage />} />
+          <Route path="/add-blog" element={<BlogForm />} />
+          <Route path="/blog/:slug" element={<BlogPost />} />
+        </Routes>
+      </div>
+    </Router>
   );
 }
 
