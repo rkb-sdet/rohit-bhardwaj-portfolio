@@ -18,3 +18,9 @@
 - Installed TailwindCSS, PostCSS, Autoprefixer
 - Configured tailwind.config.js and index.css
 - Verified setup with test heading
+
+## Step 5: Navbar Component
+- Created Navbar.tsx in src/components
+- Added logo and navigation links
+- Styled with Tailwind classes (bg-gray-900, text-white, hover effects)
+- Integrated Navbar into App.tsx
