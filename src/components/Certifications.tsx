@@ -1,46 +1,35 @@
-const certifications = [
-  {
-    title: "Responsive Web Design",
-    issuer: "freeCodeCamp",
-    year: "2026",
-    href: "https://www.freecodecamp.org/certification/rohit-bhardwaj/responsive-web-design",
-  },
-  {
-    title: "JavaScript Algorithms and Data Structures",
-    issuer: "freeCodeCamp",
-    year: "2026",
-    href: "https://www.freecodecamp.org/certification/rohit-bhardwaj/javascript-algorithms-and-data-structures-v8",
-  },
-];
+import { certificationsData } from "../data/portfolioData";
 
 function Certifications() {
+  const { badge, title, description, items } = certificationsData;
+
   return (
-    <section id="certifications" className="bg-background px-6 py-24 text-text">
+    <section id="certifications" className="scroll-mt-20 bg-transparent px-6 py-24 text-text">
       <div className="mx-auto max-w-6xl">
         <div className="mb-12 max-w-2xl">
           <p className="mb-3 text-sm font-semibold uppercase tracking-[0.25em] text-accent">
-            Credentials
+            {badge}
           </p>
           <h2 className="text-4xl font-bold tracking-tight text-primary sm:text-5xl">
-            Certifications
+            {title}
           </h2>
           <p className="mt-4 text-lg leading-8 text-text/75">
-            A few milestones that reflect my ongoing investment in the craft.
+            {description}
           </p>
         </div>
 
         <div className="grid gap-6 md:grid-cols-2">
-          {certifications.map((certificate) => (
+          {items.map((certificate) => (
             <article
               key={certificate.title}
-              className="flex flex-col justify-between gap-8 rounded-2xl border border-primary/15 bg-primary/5 p-6 shadow-sm transition hover:-translate-y-1 hover:border-primary/40 sm:p-8"
+              className="flex flex-col justify-between gap-8 rounded-2xl border border-primary/15 bg-primary/5 p-6 shadow-sm backdrop-blur-sm transition duration-200 hover:-translate-y-1 hover:border-primary/40 hover:shadow-md sm:p-8"
             >
               <div>
                 <div className="mb-6 flex items-start justify-between gap-4">
-                  <span className="flex h-12 w-12 items-center justify-center rounded-full bg-primary text-xl text-white">
+                  <span className="flex h-12 w-12 items-center justify-center rounded-full bg-primary text-xl text-white shadow-sm">
                     ✓
                   </span>
-                  <span className="rounded-full border border-accent/30 px-3 py-1 text-xs font-semibold uppercase tracking-[0.15em] text-accent">
+                  <span className="rounded-full border border-accent/30 bg-accent/5 px-3 py-1 text-xs font-semibold uppercase tracking-[0.15em] text-accent">
                     {certificate.year}
                   </span>
                 </div>

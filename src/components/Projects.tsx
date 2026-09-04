@@ -1,74 +1,185 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { projects } from "../data/projects";
-
-const filters = ["All", "Frontend", "Full Stack", "Testing"] as const;
+import { projectsData } from "../data/portfolioData";
+import ProjectModal from "./ProjectModal";
+import type { Project, ProjectCategory } from "../data/portfolioData";
 
 type ProjectsProps = {
   featuredOnly?: boolean;
 };
 
-function Projects({ featuredOnly = true }: ProjectsProps) {
-  const [activeFilter, setActiveFilter] = useState<(typeof filters)[number]>("All");
-  const projectCollection = featuredOnly ? projects.filter((project) => project.featured) : projects;
-  const visibleProjects = activeFilter === "All"
-    ? projectCollection
-    : projectCollection.filter((project) => project.category === activeFilter);
+const categories: ("All" | ProjectCategory)[] = [
+  "All",
+  "Frontend",
+  "Automation Testing",
+  "Manual Testing",
+  "SQL & Database",
+];
+
+function Projects({ featuredOnly = false }: ProjectsProps) {
+  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  const [activeCategory, setActiveCategory] = useState<"All" | ProjectCategory>("All");
+
+  const baseProjects = featuredOnly
+    ? projectsData.filter((project) => project.featured)
+    : projectsData;
+
+  const filteredProjects = baseProjects.filter((project) => {
+    if (activeCategory === "All") return true;
+    return project.category === activeCategory;
+  });
 
   return (
-    <section id="projects" className="bg-background px-6 py-24 text-text">
+    <section id="projects" className="scroll-mt-20 bg-transparent px-6 py-24 text-text relative">
       <div className="mx-auto max-w-6xl">
-        <div className="mb-12 flex flex-col justify-between gap-8 lg:flex-row lg:items-end">
+        {/* Section Header */}
+        <div className="mb-10 flex flex-col justify-between gap-6 md:flex-row md:items-end">
           <div className="max-w-2xl">
-            <p className="mb-3 text-sm font-semibold uppercase tracking-[0.25em] text-accent">Selected work</p>
+            <p className="mb-3 text-sm font-semibold uppercase tracking-[0.25em] text-accent">
+              Featured Work
+            </p>
             <h2 className="text-4xl font-bold tracking-tight text-primary sm:text-5xl">
-              {featuredOnly ? "Featured projects" : "All projects"}
+              Selected Projects
             </h2>
-            <p className="mt-4 text-lg leading-8 text-text/70">Explore the thinking, tools, and decisions behind each build.</p>
+            <p className="mt-4 text-lg leading-8 text-text/75">
+              Production-ready applications and technical concepts built with clean design and modular code.
+            </p>
           </div>
-          <div className="flex flex-wrap gap-2" aria-label="Filter projects">
-            {filters.map((filter) => (
-              <button key={filter} type="button" onClick={() => setActiveFilter(filter)} aria-pressed={activeFilter === filter} className={`rounded-full border px-4 py-2 text-sm font-semibold transition ${activeFilter === filter ? "border-primary bg-primary text-white" : "border-primary/20 text-primary hover:bg-primary/10"}`}>
-                {filter}
-              </button>
-            ))}
-          </div>
+          {featuredOnly && (
+            <Link
+              to="/projects"
+              className="inline-flex items-center gap-2 font-semibold text-primary transition hover:text-secondary"
+            >
+              Explore all projects
+              <span aria-hidden="true">→</span>
+            </Link>
+          )}
         </div>
 
-        <div className="grid gap-8 lg:grid-cols-2">
-          {visibleProjects.map((project, index) => (
-            <article key={project.slug} className={`group overflow-hidden rounded-2xl border border-primary/15 bg-primary/5 shadow-sm transition duration-300 hover:-translate-y-2 hover:border-primary/40 hover:shadow-xl hover:shadow-primary/10 ${index === 0 ? "lg:col-span-2 lg:grid lg:grid-cols-2" : ""}`}>
-              <div className={`relative overflow-hidden bg-slate-900 ${index === 0 ? "min-h-72 lg:min-h-full" : "h-64"}`}>
-                <img src={project.image} alt={`${project.title} preview`} className="h-full w-full object-cover transition duration-700 group-hover:scale-105" />
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent" />
-                <span className="absolute left-5 top-5 rounded-full bg-white/90 px-3 py-1 text-xs font-bold tracking-[0.15em] text-primary">{project.number}</span>
-                <span className="absolute bottom-5 left-5 text-xs font-semibold uppercase tracking-[0.18em] text-white">{project.category}</span>
+        {/* Category Filter Chips */}
+        <div className="mb-10 flex flex-wrap items-center gap-2 overflow-x-auto pb-2">
+          {categories.map((category) => {
+            const isActive = activeCategory === category;
+            return (
+              <button
+                key={category}
+                type="button"
+                onClick={() => setActiveCategory(category)}
+                className={`rounded-full px-4 py-1.5 text-xs font-semibold transition-all duration-200 ${
+                  isActive
+                    ? "bg-primary text-white shadow-md shadow-primary/30"
+                    : "border border-slate-200/60 dark:border-white/10 bg-slate-100/60 dark:bg-white/5 text-text/70 hover:border-primary/40 hover:text-text"
+                }`}
+              >
+                {category}
+              </button>
+            );
+          })}
+        </div>
+
+        {/* Projects Grid */}
+        <div className="grid gap-8 lg:grid-cols-3">
+          {filteredProjects.map((project) => (
+            <article
+              key={project.slug}
+              className="group flex flex-col justify-between overflow-hidden rounded-3xl border border-slate-200/60 dark:border-white/10 bg-slate-100/30 dark:bg-white/[0.03] shadow-lg backdrop-blur-md transition-all duration-300 hover:-translate-y-1.5 hover:border-primary/40 hover:shadow-2xl"
+            >
+              <div>
+                {/* Project Image with Quick View Hover Overlay */}
+                <div className="relative aspect-[16/10] overflow-hidden bg-slate-800">
+                  <img
+                    src={project.image}
+                    alt={project.title}
+                    className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+                  
+                  <span className="absolute left-4 top-4 rounded-full border border-white/20 bg-black/40 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-white backdrop-blur-md">
+                    {project.category}
+                  </span>
+
+                  {/* Quick View Button on Image Hover */}
+                  <div className="absolute inset-0 flex items-center justify-center bg-black/40 opacity-0 backdrop-blur-xs transition-opacity duration-300 group-hover:opacity-100">
+                    <button
+                      type="button"
+                      onClick={() => setSelectedProject(project)}
+                      className="rounded-full bg-white/90 dark:bg-slate-950/90 px-4 py-2 text-xs font-bold text-text shadow-lg hover:scale-105 hover:bg-white transition"
+                    >
+                      Quick Preview 👁
+                    </button>
+                  </div>
+                </div>
+
+                <div className="p-6 sm:p-7">
+                  <div className="flex items-center justify-between text-xs font-bold text-accent">
+                    <span>{project.number}</span>
+                  </div>
+
+                  <h3 className="mt-2 text-xl font-bold text-text transition group-hover:text-primary">
+                    <Link to={`/projects/${project.slug}`}>{project.title}</Link>
+                  </h3>
+
+                  <p className="mt-3 text-sm leading-relaxed text-text/70 line-clamp-3">
+                    {project.summary}
+                  </p>
+
+                  <div className="mt-4 flex flex-wrap gap-1.5">
+                    {project.technologies.map((tech) => (
+                      <span
+                        key={tech}
+                        className="rounded-md border border-slate-200/60 dark:border-white/10 bg-slate-100/50 dark:bg-white/5 px-2.5 py-1 text-xs font-medium text-text/70"
+                      >
+                        {tech}
+                      </span>
+                    ))}
+                  </div>
+                </div>
               </div>
 
-              <div className="flex flex-col p-6 sm:p-8">
-                <h3 className="text-2xl font-bold text-secondary sm:text-3xl">{project.title}</h3>
-                <p className="mt-3 leading-7 text-text/75">{project.summary}</p>
-                <div className="mt-5 flex flex-wrap gap-2">
-                  {project.technologies.map((technology) => <span key={technology} className="rounded-full border border-accent/25 px-3 py-1 text-xs font-semibold text-accent">{technology}</span>)}
-                </div>
-                <div className="mt-auto flex flex-wrap items-center gap-4 pt-8">
-                  <Link to={`/projects/${project.slug}`} className="rounded-lg bg-primary px-4 py-3 font-semibold text-white transition hover:bg-secondary">Case study ↗</Link>
-                  <a href={project.githubUrl} target="_blank" rel="noreferrer" className="font-semibold text-primary transition hover:text-secondary">GitHub</a>
-                  <a href={project.liveUrl} target="_blank" rel="noreferrer" className="font-semibold text-primary transition hover:text-secondary">Live demo ↗</a>
+              {/* Action Buttons */}
+              <div className="flex items-center justify-between border-t border-slate-200/40 dark:border-white/10 px-6 py-4 sm:px-7">
+                <button
+                  type="button"
+                  onClick={() => setSelectedProject(project)}
+                  className="text-xs font-semibold text-primary transition hover:text-secondary"
+                >
+                  Quick View
+                </button>
+                <div className="flex items-center gap-3">
+                  <Link
+                    to={`/projects/${project.slug}`}
+                    className="text-xs text-text/60 transition hover:text-text"
+                  >
+                    Details →
+                  </Link>
+                  <a
+                    href={project.githubUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="text-xs text-text/60 transition hover:text-text"
+                  >
+                    GitHub ↗
+                  </a>
+                  <a
+                    href={project.liveUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="text-xs text-text/60 transition hover:text-text"
+                  >
+                    Live ↗
+                  </a>
                 </div>
               </div>
             </article>
           ))}
         </div>
-
-        {featuredOnly ? (
-          <div className="mt-10 text-center">
-            <Link to="/projects" className="inline-flex rounded-lg border border-primary/30 px-5 py-3 font-semibold text-primary transition hover:bg-primary/10">
-              View all projects →
-            </Link>
-          </div>
-        ) : null}
       </div>
+
+      {/* Popover Preview Modal */}
+      <ProjectModal
+        project={selectedProject}
+        onClose={() => setSelectedProject(null)}
+      />
     </section>
   );
 }

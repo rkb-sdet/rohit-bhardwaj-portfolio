@@ -6,7 +6,7 @@ html {
   scroll-behavior: smooth;
   transition: background-color 0.5s ease, color 0.5s ease;
 }
-:root {
+/* :root {
   --color-background: #ffffff;
   --color-text: #000000;
   --color-primary: #2563EB;
@@ -20,6 +20,22 @@ html {
   --color-primary: #2563EB;
   --color-secondary: #9333EA;
   --color-accent: #F59E0B;
+} */
+
+:root {
+  --color-background: #f8fafc; /* Pure white se better soft light */
+  --color-text: #0f172a;       /* Pure black se better deep slate (readable) */
+  --color-primary: #2563eb;    /* Royal Blue */
+  --color-secondary: #7c3aed;  /* Sharp Purple */
+  --color-accent: #d97706;     /* Warm Amber */
+}
+
+.dark {
+  --color-background: #0b0f19; /* Deep modern night background */
+  --color-text: #f1f5f9;       /* Crisp bright text */
+  --color-primary: #3b82f6;    /* Bright electric blue (dark par pop karega) */
+  --color-secondary: #c084fc;  /* Bright soft purple/lilac (ab headings bilkul clear dikhengi) */
+  --color-accent: #fbbf24;     /* Bright glowing amber */
 }
 
 .markdown-content {
@@ -127,4 +143,30 @@ html {
   background: color-mix(in srgb, var(--color-primary) 10%, transparent);
   color: var(--color-secondary);
   font-weight: 800;
+}
+
+@keyframes floatSlow {
+  0%, 100% {
+    transform: translateY(0px) translateX(0px) scale(1);
+  }
+  50% {
+    transform: translateY(-40px) translateX(25px) scale(1.08);
+  }
+}
+
+@keyframes floatReverse {
+  0%, 100% {
+    transform: translateY(0px) translateX(0px) scale(1);
+  }
+  50% {
+    transform: translateY(35px) translateX(-25px) scale(0.95);
+  }
+}
+
+.animate-float-slow {
+  animation: floatSlow 12s ease-in-out infinite;
+}
+
+.animate-float-reverse {
+  animation: floatReverse 15s ease-in-out infinite;
 }

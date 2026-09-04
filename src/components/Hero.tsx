@@ -1,15 +1,21 @@
 import { useEffect, useState } from "react";
 import heroArtwork from "../assets/hero.png";
-
-const roles = [
-  "Frontend Developer",
-  "QA Engineer",
-  "Automation Test Engineer",
-  "Analyst",
-  "Data Analyst",
-];
+import { heroData } from "../data/portfolioData";
 
 function Hero() {
+  const {
+    badge,
+    firstName,
+    lastName,
+    roles,
+    description,
+    primaryCta,
+    resume,
+    socialLinks,
+    avatar,
+    status,
+  } = heroData;
+
   const [roleIndex, setRoleIndex] = useState(0);
   const [visibleRole, setVisibleRole] = useState("");
 
@@ -45,12 +51,24 @@ function Hero() {
 
     timeoutId = window.setTimeout(animateRole, 250);
     return () => window.clearTimeout(timeoutId);
-  }, [roleIndex]);
+  }, [roleIndex, roles]);
+
+  const handleSmoothScroll = (
+    e: React.MouseEvent<HTMLAnchorElement>,
+    targetId: string
+  ) => {
+    e.preventDefault();
+    const cleanId = targetId.replace("#", "");
+    const targetElement = document.getElementById(cleanId);
+    if (targetElement) {
+      targetElement.scrollIntoView({ behavior: "smooth" });
+    }
+  };
 
   return (
     <section
       id="home"
-      className="relative flex min-h-screen items-center overflow-hidden bg-background px-4 py-20 text-text sm:px-6 sm:py-24 lg:py-28"
+      className="relative flex min-h-screen items-center overflow-hidden bg-transparent px-4 pb-16 pt-28 sm:px-6 sm:pb-24 sm:pt-36 lg:py-28 text-text"
     >
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_15%_20%,rgba(37,99,235,0.12),transparent_32%),radial-gradient(circle_at_85%_75%,rgba(147,51,234,0.1),transparent_28%)]" />
 
@@ -58,12 +76,12 @@ function Hero() {
         <div className="order-last mx-auto max-w-2xl text-center xl:order-first xl:mx-0 xl:text-left">
           <p className="mb-5 inline-flex items-center gap-3 text-sm font-semibold uppercase tracking-[0.28em] text-accent">
             <span className="h-px w-10 bg-accent" />
-            Hello, I am
+            {badge}
           </p>
 
           <h1 className="text-5xl font-black leading-[1.05] tracking-tight text-primary sm:text-7xl">
-            Rohit
-            <span className="block text-secondary">Bhardwaj</span>
+            {firstName}
+            <span className="block text-secondary">{lastName}</span>
           </h1>
 
           <p
@@ -72,61 +90,79 @@ function Hero() {
             aria-label={`Role: ${roles[roleIndex]}`}
           >
             <span>{visibleRole}</span>
-            <span className="ml-1 inline-block h-7 w-0.5 animate-pulse bg-accent align-middle sm:h-8" aria-hidden="true" />
+            <span
+              className="ml-1 inline-block h-7 w-0.5 animate-pulse bg-accent align-middle sm:h-8"
+              aria-hidden="true"
+            />
           </p>
           <p className="mt-5 max-w-xl text-lg leading-8 text-text/70">
-            I build modern, responsive web apps with React, TailwindCSS, and TypeScript,
-            balancing thoughtful design with reliable engineering.
+            {description}
           </p>
 
           <div className="mx-auto mt-8 flex w-full max-w-xl flex-col gap-3 sm:flex-row sm:gap-4 xl:mx-0">
             <a
-              href="#projects"
-              className="inline-flex min-h-12 flex-1 items-center justify-center gap-2 rounded-lg bg-primary px-5 py-3 font-semibold text-white shadow-lg shadow-primary/20 transition hover:-translate-y-1 hover:bg-secondary"
+              href={primaryCta.link}
+              onClick={(e) => handleSmoothScroll(e, primaryCta.link)}
+              className="inline-flex min-h-12 flex-1 items-center justify-center gap-2 rounded-xl bg-primary px-5 py-3 font-semibold text-white shadow-lg shadow-primary/20 transition duration-200 hover:-translate-y-1 hover:bg-secondary"
             >
-              View my work
+              {primaryCta.text}
               <span aria-hidden="true">↗</span>
             </a>
             <a
-              href="/rohit-bhardwaj-resume.html"
+              href={`${import.meta.env.BASE_URL}${resume.fileName}`}
               download
-              className="inline-flex min-h-12 flex-1 items-center justify-center gap-2 rounded-lg border border-primary/30 px-5 py-3 font-semibold text-primary transition hover:-translate-y-1 hover:bg-primary/10"
+              className="inline-flex min-h-12 flex-1 items-center justify-center gap-2 rounded-xl border border-primary/30 px-5 py-3 font-semibold text-primary transition duration-200 hover:-translate-y-1 hover:bg-primary/10"
             >
-              Download resume
+              {resume.text}
               <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                <path d="M12 3v12m0 0 4-4m-4 4-4-4M5 21h14" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" />
+                <path
+                  d="M12 3v12m0 0 4-4m-4 4-4-4M5 21h14"
+                  stroke="currentColor"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                />
               </svg>
             </a>
           </div>
 
           <div className="mt-8 flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-sm font-medium text-text/60 xl:justify-start">
             <span>Find me online</span>
-            <a href="https://github.com/rohit-bhardwaj" target="_blank" rel="noreferrer" className="text-primary transition hover:text-secondary">
-              GitHub
-            </a>
-            <a href="https://www.linkedin.com/in/rohit-bhardwaj/" target="_blank" rel="noreferrer" className="text-primary transition hover:text-secondary">
-              LinkedIn
-            </a>
+            {socialLinks.map((item) => (
+              <a
+                key={item.label}
+                href={item.url}
+                target="_blank"
+                rel="noreferrer"
+                className="text-primary transition hover:text-secondary"
+              >
+                {item.label}
+              </a>
+            ))}
           </div>
         </div>
 
-        <div className="order-first relative mx-auto w-full max-w-md xl:order-last">
-          <div className="absolute -inset-5 rounded-[2rem] border border-primary/10 bg-primary/5 rotate-6" />
-          <div className="absolute -inset-5 rounded-[2rem] border border-secondary/10 bg-secondary/5 -rotate-6" />
-          <div className="relative overflow-hidden rounded-[2rem] border border-white/20 bg-slate-900 p-3 shadow-2xl shadow-primary/20">
+        <div className="order-first relative mx-auto w-full max-w-sm sm:max-w-md xl:order-last">
+          <div className="absolute -inset-4 sm:-inset-5 rounded-[2.2rem] border border-primary/15 bg-primary/5 rotate-6 blur-[1px]" />
+          <div className="absolute -inset-4 sm:-inset-5 rounded-[2.2rem] border border-secondary/15 bg-secondary/5 -rotate-6 blur-[1px]" />
+          <div className="relative overflow-hidden rounded-[2rem] border border-slate-200/60 dark:border-white/10 bg-slate-900/90 p-3 shadow-2xl backdrop-blur-md">
             <div className="relative aspect-[4/3] overflow-hidden rounded-[1.5rem] bg-slate-800">
               <img
-                src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=900&q=85"
-                alt="Professional developer portrait"
+                src={avatar}
+                alt={`${firstName} ${lastName}`}
                 className="h-full w-full object-cover"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent" />
-              <img src={heroArtwork} alt="" className="absolute -bottom-8 -right-10 w-48 opacity-25" />
+              <img
+                src={heroArtwork}
+                alt=""
+                className="pointer-events-none absolute -bottom-8 -right-10 w-48 opacity-25"
+              />
             </div>
           </div>
-          <div className="relative mx-auto mt-4 flex w-fit items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.16em] text-primary shadow-sm">
-            <span className="h-2 w-2 animate-pulse rounded-full bg-green-500" />
-            Available for projects
+          <div className="relative mx-auto mt-4 flex w-fit items-center gap-2 rounded-full border border-primary/25 bg-background/80 px-4 py-2 text-xs font-semibold uppercase tracking-[0.16em] text-primary shadow-sm backdrop-blur-md">
+            <span className="h-2 w-2 animate-pulse rounded-full bg-emerald-500" />
+            {status}
           </div>
         </div>
       </div>
