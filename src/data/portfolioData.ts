@@ -159,7 +159,7 @@ export const heroData: HeroSection = {
     },
     {
       label: "LinkedIn",
-      url: "https://www.linkedin.com/in/rohit-bhardwaj/",
+      url: "https://www.linkedin.com/in/rkb-sdet/",
     },
   ],
   avatar:
@@ -227,6 +227,7 @@ export const skillsData: SkillsSection = {
         { name: "React", level: "Advanced", icon: "⚛️" },
         { name: "TypeScript", level: "Advanced", icon: "📘" },
         { name: "Tailwind CSS", level: "Advanced", icon: "🎨" },
+        { name: "Zustand", level: "Advanced", icon: "🐻" },
         { name: "Next.js", level: "Proficient", icon: "▲" },
         { name: "HTML5 / Semantic UI", level: "Advanced", icon: "🌐" },
         { name: "CSS3 / Responsive Design", level: "Advanced", icon: "📐" },
@@ -250,9 +251,9 @@ export const skillsData: SkillsSection = {
       skills: [
         { name: "Manual Testing & RTM", level: "Advanced", icon: "📋" },
         { name: "SQL / Queries", level: "Advanced", icon: "🗄️" },
+        { name: "Supabase / PostgreSQL", level: "Proficient", icon: "⚡" },
         { name: "Jira / Bug Lifecycle", level: "Advanced", icon: "🐞" },
         { name: "TestRail", level: "Proficient", icon: "📑" },
-        { name: "PostgreSQL / MySQL", level: "Proficient", icon: "🐬" },
         { name: "ETL / Data Integrity", level: "Proficient", icon: "📊" },
       ],
     },
@@ -274,9 +275,46 @@ export const skillsData: SkillsSection = {
 // --- Projects Data ---
 export const projectsData: Project[] = [
   {
-    slug: "portfolio-website",
+    slug: "ovenglow-artisan-bakery",
     featured: true,
     number: "01",
+    title: "OvenGlow — 24x7 Artisan Patisserie & Kitchen Dispatch",
+    category: "Full Stack",
+    summary:
+      "A full-stack, enterprise-grade midnight bakery e-commerce platform with real-time WebSocket order tracking, Supabase Auth, and an authenticated staff kitchen dispatch console.",
+    description:
+      "Engineered with React 18, TypeScript, TailwindCSS, and Zustand, backed by a Supabase PostgreSQL database with Row Level Security (RLS). Features instant 30-min express checkout, live delivery status simulations, dynamic search/filter, and a real-time staff operations dashboard.",
+    technologies: [
+      "React",
+      "TypeScript",
+      "Tailwind CSS",
+      "Zustand",
+      "Supabase",
+      "PostgreSQL",
+      "Row Level Security",
+      "WebSockets",
+      "Vercel",
+    ],
+    image:
+      "https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=1200&q=85",
+    githubUrl: "https://github.com/rkb-sdet/ovenglow-bakery",
+    liveUrl: "https://ovenglow-bakery.vercel.app",
+    features: [
+      "Dynamic catalog with client-side instant search, category filtering & eggless toggles",
+      "Express checkout with address capture and live Supabase PostgreSQL insertion",
+      "Interactive 4-stage delivery tracker modal with animated real-time progress",
+      "Protected Kitchen Staff Console with Supabase Auth session & status dispatch transitions",
+      "Real-time WebSocket subscriptions auto-reflecting new orders without manual reload",
+    ],
+    challenge:
+      "Enforcing strict database security preventing anonymous public users from viewing or manipulating order records, while simultaneously allowing unauthenticated checkouts and granting instant live updates to kitchen staff.",
+    solution:
+      "Architected PostgreSQL Row Level Security (RLS) granting anonymous clients INSERT-only privileges and restricting SELECT/UPDATE operations to authenticated staff sessions, paired with Supabase Realtime replication channels for instant WebSocket sync.",
+  },
+  {
+    slug: "portfolio-website",
+    featured: true,
+    number: "02",
     title: "Interactive Developer Portfolio",
     category: "Frontend",
     summary:
@@ -302,7 +340,7 @@ export const projectsData: Project[] = [
   {
     slug: "playwright-e2e-automation-framework",
     featured: true,
-    number: "02",
+    number: "03",
     title: "Playwright E2E Automation Framework",
     category: "Automation Testing",
     summary:
@@ -328,7 +366,7 @@ export const projectsData: Project[] = [
   {
     slug: "selenium-csharp-automation",
     featured: true,
-    number: "03",
+    number: "04",
     title: "Selenium C# Test Automation Suite",
     category: "Automation Testing",
     summary:
@@ -354,7 +392,7 @@ export const projectsData: Project[] = [
   {
     slug: "ecommerce-qa-test-strategy",
     featured: true,
-    number: "04",
+    number: "05",
     title: "E-Commerce Test Strategy & Bug Lifecycle",
     category: "Manual Testing",
     summary:
@@ -380,7 +418,7 @@ export const projectsData: Project[] = [
   {
     slug: "sql-data-integrity-suite",
     featured: false,
-    number: "05",
+    number: "06",
     title: "SQL Data Integrity & ETL Validation",
     category: "SQL & Database",
     summary:
