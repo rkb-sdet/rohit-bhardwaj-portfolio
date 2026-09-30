@@ -95,7 +95,7 @@ export default function CommandPalette() {
         shortcut: "R",
         perform: () => {
           setIsOpen(false);
-          window.open(`/${heroData.resume.fileName}`, "_blank");
+          window.open(heroData.resume.link, "_blank");
         },
       },
       {

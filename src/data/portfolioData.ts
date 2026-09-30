@@ -21,6 +21,7 @@ export type HeroSection = {
   resume: {
     text: string;
     fileName: string;
+    link: string;
   };
   socialLinks: SocialLinkItem[];
   avatar: string;
@@ -72,11 +73,11 @@ export type SkillsSection = {
 // --- Project Types ---
 export type ProjectCategory =
   | "Frontend"
+  | "Full Stack"
   | "Automation Testing"
   | "Manual Testing"
   | "SQL & Database"
-  | "API & Backend"
-  | "Full Stack";
+  | "API & Backend";
 
 export type Project = {
   slug: string;
@@ -150,7 +151,8 @@ export const heroData: HeroSection = {
   },
   resume: {
     text: "Download resume",
-    fileName: "rohit-bhardwaj-resume.html",
+    fileName: "Rohit Kumar - Resume.pdf",
+    link: `${import.meta.env.BASE_URL}Rohit%20Kumar%20-%20Resume.pdf`,
   },
   socialLinks: [
     {
@@ -162,8 +164,7 @@ export const heroData: HeroSection = {
       url: "https://www.linkedin.com/in/rkb-sdet/",
     },
   ],
-  avatar:
-    "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=900&q=85",
+  avatar: `${import.meta.env.BASE_URL}rohit-bhardwaj.jpg`,
   status: "Available for roles & projects",
 };
 
@@ -172,7 +173,7 @@ export const aboutData: AboutSection = {
   badge: "Behind the work",
   title: "About me",
   summary:
-    "Engineering robust digital web experiences with modern frontend technologies while ensuring enterprise-grade stability through disciplined manual and automated quality engineering.",
+    "Automation Test Engineer with 6+ years of hands-on experience building reliable test frameworks, improving product quality, and accelerating delivery across e-commerce and enterprise applications.",
   cards: [
     {
       index: "01",
@@ -181,14 +182,14 @@ export const aboutData: AboutSection = {
       accentColor: "primary",
       items: [
         {
-          tag: "Core Engineering",
-          heading: "Computer Science & Web Architecture",
-          text: "Gained core competency in Data Structures, Object-Oriented Programming (Java/TypeScript), and Modern Web Standards.",
+          tag: "Dr. APJ Abdul Kalam Technical University, Lucknow",
+          heading: "Master of Computer Applications (MCA)",
+          text: "Graduated with a strong foundation in software development, algorithms, and database management, equipping me with the skills to design and implement robust applications.",
         },
         {
-          tag: "Engineering Mindset",
-          heading: "Frontend & Test Automation",
-          text: "Focused on bridging modern frontend development with deep, automated test coverage matrices and CI/CD pipelines.",
+          tag: "Chattarpati Shahu Ji Maharaj University, Kanpur",
+          heading: "Bachelor of Computer Applications (BCA)",
+          text: "Completed undergraduate studies with a focus on programming, data structures, and software engineering principles, laying the groundwork for a career in technology and quality assurance.",
         },
       ],
     },
@@ -199,14 +200,14 @@ export const aboutData: AboutSection = {
       accentColor: "secondary",
       items: [
         {
-          tag: "Frontend Development",
-          heading: "React, TypeScript & Tailwind CSS",
-          text: "Designing fast, accessible client-side architectures with optimized state flow and clean design systems.",
+          tag: "Global Logic Pvt. Ltd. (Feb 2021 - Oct 2025)",
+          heading: "QA Engineer",
+          text: "Designing and maintaining scalable automation frameworks with Selenium Java, Playwright TypeScript, POM, and hybrid testing strategies to improve release confidence and reduce regressions.",
         },
         {
-          tag: "Quality Engineering",
-          heading: "SDET & Test Automation",
-          text: "Architecting Page Object Model test suites with Playwright, Cypress, and Selenium, coupled with API testing and SQL verification.",
+          tag: "Tata Consultancy Services (TCS) (Oct 2025 - Present)",
+          heading: "Automation Test Engineer",
+          text: "Driving functional, regression, and cross-environment validation across web applications while integrating tests with Playwright with TypeScript, Azure DevOps, Docker, and defect lifecycle processes in Agile teams.",
         },
       ],
     },
@@ -275,9 +276,43 @@ export const skillsData: SkillsSection = {
 // --- Projects Data ---
 export const projectsData: Project[] = [
   {
-    slug: "ovenglow-artisan-bakery",
+    slug: "ovenglow-playwright-automation",
     featured: true,
     number: "01",
+    title: "OvenGlow Bakery — E2E Playwright Automation Suite",
+    category: "Automation Testing",
+    summary:
+      "Enterprise-grade End-to-End test automation framework built in TypeScript and Playwright for the OvenGlow Bakery platform, achieving 100% pass rate across 25+ test suites with GitHub Actions CI/CD integration.",
+    description:
+      "Comprehensive SDET automation architecture featuring Page Object Model (POM), custom dependency injection fixtures, network failure simulation via route interception, PostgreSQL RLS security verification, and automated HTML reporting pipelines.",
+    technologies: [
+      "TypeScript",
+      "Playwright",
+      "Page Object Model",
+      "GitHub Actions",
+      "Allure / HTML Reports",
+      "PostgreSQL RLS",
+    ],
+    image:
+      "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=1200&q=85",
+    githubUrl: "https://github.com/rkb-sdet/ovenglow-playwright-automation",
+    liveUrl: "https://github.com/rkb-sdet/ovenglow-playwright-automation",
+    features: [
+      "100% pass rate across 25+ comprehensive E2E test scenarios covering catalog, cart math, and express checkout",
+      "Modular Page Object Model (POM) architecture with custom isolation fixtures to eliminate test flakiness",
+      "Network resilience and chaos engineering simulations (500 Internal Server Error interception via page.route)",
+      "Strict PostgreSQL Row Level Security (RLS) data validation and kitchen staff operations workflow testing",
+      "Automated CI/CD quality gates via GitHub Actions with parallel test execution and HTML report artifacts",
+    ],
+    challenge:
+      "Eliminating test flakiness caused by asynchronous DOM updates, real-time Supabase state changes, and validating complex network failure and security boundaries without disrupting live environments.",
+    solution:
+      "Engineered web-first assertions, smart auto-waiting locators, custom dependency injection fixtures, and controlled route mocking to ensure lightning-fast and deterministic execution.",
+  },
+  {
+    slug: "ovenglow-artisan-bakery",
+    featured: true,
+    number: "02",
     title: "OvenGlow — 24x7 Artisan Patisserie & Kitchen Dispatch",
     category: "Full Stack",
     summary:
@@ -312,35 +347,34 @@ export const projectsData: Project[] = [
       "Architected PostgreSQL Row Level Security (RLS) granting anonymous clients INSERT-only privileges and restricting SELECT/UPDATE operations to authenticated staff sessions, paired with Supabase Realtime replication channels for instant WebSocket sync.",
   },
   {
-    slug: "portfolio-website",
-    featured: true,
-    number: "02",
-    title: "Interactive Developer Portfolio",
+    slug: "classic-developer-portfolio",
+    featured: false,
+    number: "03",
+    title: "Classic Developer Portfolio",
     category: "Frontend",
     summary:
-      "A high-performance portfolio featuring keyboard-driven navigation, infinite marquees, live GitHub REST integration, and smooth reading progress tracking.",
+      "Original personal portfolio website showcasing early projects, core technical skills, and professional journey.",
     description:
-      "Built with React 18, Vite, and Tailwind CSS. Employs hardware-accelerated CSS animations and modular TypeScript architecture for recruiters.",
-    technologies: ["React", "TypeScript", "Tailwind CSS", "Vite", "GitHub REST API"],
+      "A clean, responsive static developer portfolio hosted on GitHub Pages, featuring structured project showcases, contact links, and core capability highlights.",
+    technologies: ["HTML5", "CSS3", "JavaScript", "GitHub Pages"],
     image:
-      "https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?auto=format&fit=crop&w=1200&q=85",
-    githubUrl: "https://github.com/rkb-sdet/rohit-bhardwaj-portfolio",
-    liveUrl: "https://rohit-bhardwaj.github.io/rohit-bhardwaj-portfolio/",
+      "https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?auto=format&fit=crop&w=1200&q=85",
+    githubUrl: "https://github.com/rkb-sdet/rkb-sdet",
+    liveUrl: "https://rkb-sdet.github.io/rkb-sdet/",
     features: [
-      "Dynamic Command Palette (Ctrl + K) for rapid modal search",
-      "Live GitHub commit heatmap & repository stats fetching",
-      "GPU-accelerated reading progress bar",
-      "Quick project preview popover modal",
+      "Responsive layout optimized for various screen sizes and viewports",
+      "Clean section-based architecture for professional background and technical skills",
+      "Direct deployment integration via GitHub Pages",
     ],
     challenge:
-      "Preventing layout shifts and unnecessary React re-renders while coordinating real-time API fetches and continuous marquee loops.",
+      "Structuring a clean and lightweight personal landing page from scratch without heavy UI frameworks.",
     solution:
-      "Engineered decoupled data state, CSS-injected standalone keyframes, and requestAnimationFrame throttling for native 60fps responsiveness.",
+      "Utilized semantic HTML structures paired with modular CSS styling and lightweight JavaScript for smooth section transitions.",
   },
   {
     slug: "playwright-e2e-automation-framework",
     featured: true,
-    number: "03",
+    number: "04",
     title: "Playwright E2E Automation Framework",
     category: "Automation Testing",
     summary:
@@ -366,7 +400,7 @@ export const projectsData: Project[] = [
   {
     slug: "selenium-csharp-automation",
     featured: true,
-    number: "04",
+    number: "05",
     title: "Selenium C# Test Automation Suite",
     category: "Automation Testing",
     summary:
@@ -392,7 +426,7 @@ export const projectsData: Project[] = [
   {
     slug: "ecommerce-qa-test-strategy",
     featured: true,
-    number: "05",
+    number: "06",
     title: "E-Commerce Test Strategy & Bug Lifecycle",
     category: "Manual Testing",
     summary:
@@ -418,7 +452,7 @@ export const projectsData: Project[] = [
   {
     slug: "sql-data-integrity-suite",
     featured: false,
-    number: "06",
+    number: "07",
     title: "SQL Data Integrity & ETL Validation",
     category: "SQL & Database",
     summary:

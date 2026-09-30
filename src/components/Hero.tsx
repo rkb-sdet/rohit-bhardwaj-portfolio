@@ -109,8 +109,8 @@ function Hero() {
               <span aria-hidden="true">↗</span>
             </a>
             <a
-              href={`${import.meta.env.BASE_URL}${resume.fileName}`}
-              download
+              href={resume.link}
+              download={resume.fileName}
               className="inline-flex min-h-12 flex-1 items-center justify-center gap-2 rounded-xl border border-primary/30 px-5 py-3 font-semibold text-primary transition duration-200 hover:-translate-y-1 hover:bg-primary/10"
             >
               {resume.text}
@@ -150,7 +150,7 @@ function Hero() {
               <img
                 src={avatar}
                 alt={`${firstName} ${lastName}`}
-                className="h-full w-full object-cover"
+                className="h-full w-full object-cover object-[center_32%]"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent" />
               <img
