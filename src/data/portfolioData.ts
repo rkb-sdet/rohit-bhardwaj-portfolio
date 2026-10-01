@@ -229,7 +229,7 @@ export const skillsData: SkillsSection = {
         { name: "TypeScript", level: "Advanced", icon: "📘" },
         { name: "Tailwind CSS", level: "Advanced", icon: "🎨" },
         { name: "Zustand", level: "Advanced", icon: "🐻" },
-        { name: "Next.js", level: "Proficient", icon: "▲" },
+        // { name: "Next.js", level: "Proficient", icon: "▲" },
         { name: "HTML5 / Semantic UI", level: "Advanced", icon: "🌐" },
         { name: "CSS3 / Responsive Design", level: "Advanced", icon: "📐" },
       ],

@@ -123,7 +123,7 @@ export default function GithubStats() {
         {/* Contribution Activity Heatmap & Streak Cards */}
         <div className="mb-12 grid gap-6 lg:grid-cols-3">
           {/* Commit Heatmap Graph (2 Columns) */}
-          <div className="lg:col-span-2 rounded-3xl border border-slate-200/70 dark:border-white/10 bg-slate-100/40 dark:bg-white/[0.02] p-6 sm:p-7 backdrop-blur-md flex flex-col justify-between">
+          <div className="min-w-0 lg:col-span-2 rounded-3xl border border-slate-200/70 dark:border-white/10 bg-slate-100/40 dark:bg-white/[0.02] p-6 sm:p-7 backdrop-blur-md flex flex-col justify-between">
             <div className="flex items-center justify-between mb-4">
               <div>
                 <h3 className="text-lg font-bold text-text">Contribution Heatmap</h3>
@@ -157,7 +157,7 @@ export default function GithubStats() {
           </div>
 
           {/* GitHub Live Streak / Metric Badge (1 Column) */}
-          <div className="rounded-3xl border border-slate-200/70 dark:border-white/10 bg-slate-100/40 dark:bg-white/[0.02] p-6 sm:p-7 backdrop-blur-md flex flex-col justify-between">
+          <div className="min-w-0 rounded-3xl border border-slate-200/70 dark:border-white/10 bg-slate-100/40 dark:bg-white/[0.02] p-6 sm:p-7 backdrop-blur-md flex flex-col justify-between">
             <div>
               <h3 className="text-lg font-bold text-text">Dev Streak & Stats</h3>
               <p className="text-xs text-text/60 mb-4">Real-time repository statistics</p>

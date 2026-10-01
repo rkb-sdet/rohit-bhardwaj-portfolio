@@ -1,6 +1,6 @@
 import frontMatter from "front-matter";
 
-const markdownFiles = import.meta.glob("../content/blog/*.md", {
+const markdownFiles = import.meta.glob("../content/blog/**/*.md", {
   query: "?raw",
   import: "default",
   eager: true,
@@ -11,6 +11,8 @@ export type BlogPost = {
   title: string;
   category: string;
   technology: string;
+  series?: string;
+  seriesOrder?: number;
   tags: string[];
   date: string;
   summary: string;
@@ -35,6 +37,15 @@ export const blogCategories = [
 
 const stringValue = (value: unknown, fallback = "") => String(value ?? fallback);
 const arrayValue = (value: unknown) => Array.isArray(value) ? value.map(String) : [];
+const numberValue = (value: unknown) => typeof value === "number" ? value : Number(value);
+
+function comparePosts(first: BlogPost, second: BlogPost) {
+  if (first.series && first.series === second.series && first.seriesOrder !== undefined && second.seriesOrder !== undefined) {
+    return first.seriesOrder - second.seriesOrder;
+  }
+
+  return second.date.localeCompare(first.date);
+}
 
 export const blogPosts: BlogPost[] = Object.values(markdownFiles)
   .map((file) => {
@@ -44,6 +55,8 @@ export const blogPosts: BlogPost[] = Object.values(markdownFiles)
       title: String(parsed.attributes.title),
       category: String(parsed.attributes.category),
       technology: stringValue(parsed.attributes.technology, stringValue(parsed.attributes.category)),
+      series: stringValue(parsed.attributes.series) || undefined,
+      seriesOrder: Number.isFinite(numberValue(parsed.attributes.seriesOrder)) ? numberValue(parsed.attributes.seriesOrder) : undefined,
       tags: arrayValue(parsed.attributes.tags),
       date: stringValue(parsed.attributes.date),
       summary: stringValue(parsed.attributes.summary),
@@ -53,7 +66,7 @@ export const blogPosts: BlogPost[] = Object.values(markdownFiles)
       content: parsed.body.trim(),
     };
   })
-  .sort((first, second) => second.date.localeCompare(first.date));
+  .sort(comparePosts);
 
 export function getCategorySlug(category: string) {
   return category.toLowerCase().replace(/\s+/g, "-");

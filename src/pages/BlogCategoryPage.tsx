@@ -16,7 +16,13 @@ export default function BlogCategoryPage() {
   const posts = useMemo(() => blogPosts
     .filter((post) => post.category === category || post.technology === category)
     .filter((post) => `${post.title} ${post.summary} ${post.tags.join(" ")}`.toLowerCase().includes(search.toLowerCase()))
-    .sort((first, second) => sort === "latest" ? second.date.localeCompare(first.date) : first.date.localeCompare(second.date)), [category, search, sort]);
+    .sort((first, second) => {
+      if (first.series && first.series === second.series && first.seriesOrder !== undefined && second.seriesOrder !== undefined) {
+        return first.seriesOrder - second.seriesOrder;
+      }
+
+      return sort === "latest" ? second.date.localeCompare(first.date) : first.date.localeCompare(second.date);
+    }), [category, search, sort]);
 
   if (!category) {
     return <main className="flex min-h-[70vh] items-center justify-center px-6 py-24 text-center"><div><h1 className="text-4xl font-bold text-primary">Category not found</h1><Link to="/blog" className="mt-6 inline-flex rounded-lg bg-primary px-5 py-3 font-semibold text-white">Back to blog</Link></div></main>;

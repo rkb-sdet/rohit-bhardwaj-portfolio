@@ -14,7 +14,15 @@ export default function TechnologyPage() {
   const { technology: technologySlug = "", slug } = useParams<{ technology: string; slug?: string }>();
   const navigate = useNavigate();
   const technology = getTechnologyFromSlug(technologySlug);
-  const posts = useMemo(() => blogPosts.filter((post) => post.technology === technology), [technology]);
+  const posts = useMemo(() => blogPosts
+    .filter((post) => post.technology === technology)
+    .sort((first, second) => {
+      if (first.series && first.series === second.series && first.seriesOrder !== undefined && second.seriesOrder !== undefined) {
+        return first.seriesOrder - second.seriesOrder;
+      }
+
+      return second.date.localeCompare(first.date);
+    }), [technology]);
   const selectedPost = posts.find((post) => post.slug === slug) ?? posts[0];
 
   useEffect(() => {
