@@ -16,76 +16,70 @@ readingTime: 8 min read
 featured: false
 ---
 
-# TypeScript Data Types
+# Data Types in TypeScript
 
 ---
 
-## 1. Dynamically Typed vs Statically Typed Languages
+## 1. Dynamically vs Statically Typed Languages
 
 ### JavaScript → Dynamically Typed
-- Variable types are checked at **runtime**.
-- You can change the type of a variable later.
+- Variable types are checked at **runtime**.  
+- You can change the type of a variable later.  
 
-**Example:**
 ```javascript
-let age = 25; // age is a number
-age = "twenty-five"; // Now age is a string
-console.log(age); // Output: "twenty-five"
+let age = 25;   // number
+age = "twenty-five"; // string (no error in JS)
+console.log(age); // "twenty-five"
 ```
-✅ No errors because JavaScript allows type changes dynamically.
+
+⚠ JavaScript allows type changes dynamically, which can cause bugs.
 
 ---
 
 ### TypeScript → Statically Typed
-- Variable types are checked at **compile time**.
-- You cannot change the type later.
+- Variable types are checked at **compile time**.  
+- You cannot change the type once declared.  
 
-**Example:**
 ```typescript
 let data: number = 10; // data is a number
 data = "ten"; // ❌ Error: Type 'string' is not assignable to type 'number'
 ```
-✔ TypeScript catches this error before the code runs.
+
+✔ TypeScript catches errors before the code runs.
 
 ---
 
-## 2. Type-Safety
+## 2. Type Safety in TypeScript
 
 ### JavaScript → Not Type-Safe
-Allows operations between incompatible types, leading to unexpected behavior.
-
-**Example:**
 ```javascript
 const result = "5" + 3; 
-console.log(result); // Output: "53" (not 8)
+console.log(result); // "53" (string concatenation, not 8)
 ```
 
 ---
 
 ### TypeScript → Type-Safe
-Prevents operations between incompatible types.
-
-**Example:**
 ```typescript
 const result: number = "5" + 3; 
 // ❌ Error: Type 'string' is not assignable to type 'number'
 ```
 
+✔ TypeScript prevents operations between incompatible types.
+
 ---
 
 ### Key Takeaways
-- **Dynamic Typing (JS):** Types are flexible, checked at runtime.  
-- **Static Typing (TS):** Types are fixed, checked at compile time.  
+- **Dynamic Typing (JS):** Types flexible, checked at runtime.  
+- **Static Typing (TS):** Types fixed, checked at compile time.  
 - **Type Safety (TS):** Prevents wrong type operations, reducing bugs.  
 
 ---
 
-## 3. TypeScript Types, Annotations & Type Inference
+## 3. TypeScript Types, Annotations & Inference
 
 ### TypeScript Types
-Built-in or custom categories for variables (e.g., `number`, `string`, `boolean`).
-
-**Example:**
+Built-in or custom categories for variables.
 ```typescript
 let isDone: boolean = true;
 let score: number = 100;
@@ -94,9 +88,7 @@ let score: number = 100;
 ---
 
 ### Type Annotations
-Explicitly telling TypeScript the type of a variable using `: type`.
-
-**Example:**
+Explicitly tell TypeScript the type using `: type`.
 ```typescript
 let name: string = "Alice";
 let age: number = 30;
@@ -105,51 +97,48 @@ let age: number = 30;
 ---
 
 ### Type Inference
-TypeScript automatically guesses the type if you don’t annotate it.
-
-**Example:**
+TypeScript automatically infers types if not annotated.
 ```typescript
 let message = "Hello"; // inferred as string
 let count = 42;        // inferred as number
 
-// message = 123; ❌ Error (TypeScript knows message must stay a string)
+// message = 123; ❌ Error (must stay string)
 ```
 
 ---
 
-### Key Differences
-- **Type Annotation:** You manually define the type.  
-- **Type Inference:** TypeScript figures it out automatically.  
+### Key Difference
+- **Annotation:** You define the type.  
+- **Inference:** TypeScript figures it out automatically.  
 
 ---
 
-## 4. TypeScript Data Types
+## 4. Primitive Types (Built-in)
 
-### Primitive Types (Built-in)
-
-- **Number** → integers & decimals (`42`, `3.14`)  
-- **String** → text data (`'Hello'`, `"Hello"`, `` `Hello ${name}` ``)  
-- **Boolean** → `true` or `false`  
-- **Null** → intentional empty value (`let x = null`)  
-- **Undefined** → declared but not assigned (`let y;`)  
-- **Any** → flexible type (disables checks) → ⚠ Avoid using  
-- **Union Type** → multiple types (`let id: string | number = "123";`)  
-- **Void** → functions that don’t return anything  
+1. **Number** → integers & decimals (`42`, `3.14`)  
+2. **String** → text data (`'Hello'`, `"Hello"`, `` `Hello ${name}` ``)  
+3. **Boolean** → `true` or `false`  
+4. **Null** → intentional empty value (`let x = null`)  
+5. **Undefined** → declared but not assigned (`let y;`)  
+6. **Any** → disables type checking (⚠ avoid unless necessary)  
+7. **Union Type** → multiple types (`let id: string | number = "123";`)  
+8. **Void** → functions that don’t return anything  
 
 ---
 
-### Non-Primitive Types (Objects & Custom)
-- **Array**
-- **Tuple**
-- **Class**
-- **Functions**
-- **Interface**
+## 5. Non-Primitive Types (Objects & Custom)
+
+- **Array**  
+- **Tuple**  
+- **Class**  
+- **Functions**  
+- **Interface**  
 
 ---
 
-### Key Takeaways
+## Key Takeaways
 ✔ Primitive types → basic, single values.  
 ✔ Non-primitive types → complex, structured data.  
 ✔ Avoid `any` → use proper types for safety.  
-✔ Union types (`|`) → flexibility when variable can be multiple types.  
+✔ Union types (`|`) → flexibility for multiple possible types.  
 

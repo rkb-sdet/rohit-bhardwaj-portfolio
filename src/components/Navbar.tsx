@@ -108,7 +108,7 @@ function Navbar() {
         </Link>
 
         {/* Desktop Menu Links */}
-        <div className="hidden md:flex items-center gap-1.5 rounded-full bg-slate-100/70 dark:bg-white/5 border border-slate-200/50 dark:border-white/10 p-1 backdrop-blur-sm">
+        <div className="hidden lg:flex items-center gap-1.5 rounded-full bg-slate-100/70 dark:bg-white/5 border border-slate-200/50 dark:border-white/10 p-1 backdrop-blur-sm">
           {navItems.map((link) => {
             const isCurrent = location.pathname === "/" && active === link;
             return (
@@ -170,7 +170,7 @@ function Navbar() {
           <button
             type="button"
             aria-label={isOpen ? "Close menu" : "Open menu"}
-            className="md:hidden rounded-full p-1.5 text-text/80 hover:text-primary hover:bg-primary/10 border border-slate-200/50 dark:border-white/10 transition-colors"
+            className="lg:hidden rounded-full p-1.5 text-text/80 hover:text-primary hover:bg-primary/10 border border-slate-200/50 dark:border-white/10 transition-colors"
             onClick={() => setIsOpen(!isOpen)}
           >
             <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -187,7 +187,7 @@ function Navbar() {
 
       {/* Mobile Drawer */}
       {isOpen && (
-        <div className="pointer-events-auto fixed inset-x-3 top-16 rounded-2xl border border-slate-200/70 dark:border-white/10 bg-background/95 p-4 shadow-2xl backdrop-blur-2xl md:hidden">
+        <div className="pointer-events-auto fixed inset-x-3 top-16 rounded-2xl border border-slate-200/70 dark:border-white/10 bg-background/95 p-4 shadow-2xl backdrop-blur-2xl lg:hidden">
           <ul className="flex flex-col space-y-1.5">
             {navItems.map((link) => (
               <li key={link}>

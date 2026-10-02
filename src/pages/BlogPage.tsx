@@ -9,6 +9,12 @@ export default function BlogPage() {
   const [category, setCategory] = useState("All");
   const [technology, setTechnology] = useState("All");
   const [sort, setSort] = useState<"latest" | "oldest">("latest");
+  const resetFilters = () => {
+    setSearch("");
+    setCategory("All");
+    setTechnology("All");
+    setSort("latest");
+  };
 
   const filteredPosts = useMemo(
     () =>
@@ -58,6 +64,7 @@ export default function BlogPage() {
           onCategoryChange={setCategory}
           onTechnologyChange={setTechnology}
           onSortChange={setSort}
+          onReset={resetFilters}
         />
 
         {/* Technology Tracks */}
@@ -124,11 +131,7 @@ export default function BlogPage() {
               </p>
               <button
                 type="button"
-                onClick={() => {
-                  setSearch("");
-                  setCategory("All");
-                  setTechnology("All");
-                }}
+                onClick={resetFilters}
                 className="mt-5 rounded-xl bg-primary px-5 py-2.5 text-xs font-semibold text-white shadow-md shadow-primary/20 transition hover:bg-secondary"
               >
                 Reset filters

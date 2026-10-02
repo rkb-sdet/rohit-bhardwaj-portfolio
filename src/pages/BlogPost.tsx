@@ -23,10 +23,16 @@ export default function BlogPost() {
   const { slug } = useParams<{ slug: string }>();
   const post = blogPosts.find((item) => item.slug === slug);
   const toc = useMemo(() => (post ? getToc(post.content) : []), [post]);
-  const categoryPosts = post ? blogPosts.filter((item) => item.category === post.category) : [];
-  const postIndex = post ? categoryPosts.findIndex((item) => item.slug === post.slug) : -1;
-  const previousPost = postIndex > 0 ? categoryPosts[postIndex - 1] : undefined;
-  const nextPost = postIndex >= 0 && postIndex < categoryPosts.length - 1 ? categoryPosts[postIndex + 1] : undefined;
+  const navigationPosts = post
+    ? post.series
+      ? blogPosts
+        .filter((item) => item.series === post.series)
+        .sort((first, second) => (first.seriesOrder ?? 0) - (second.seriesOrder ?? 0))
+      : blogPosts.filter((item) => item.category === post.category)
+    : [];
+  const postIndex = post ? navigationPosts.findIndex((item) => item.slug === post.slug) : -1;
+  const previousPost = postIndex > 0 ? navigationPosts[postIndex - 1] : undefined;
+  const nextPost = postIndex >= 0 && postIndex < navigationPosts.length - 1 ? navigationPosts[postIndex + 1] : undefined;
   const relatedPosts = post ? getRelatedPosts(post) : [];
 
   // Strip duplicate h1 if markdown repeats the post title on the first line
@@ -169,30 +175,36 @@ export default function BlogPost() {
               </ReactMarkdown>
             </div>
 
-            {/* Pagination Controls */}
-            <div className="mt-12 flex items-center justify-between gap-4 border-t border-slate-200/40 dark:border-white/10 pt-6">
-              {previousPost ? (
-                <Link to={`/blog/${previousPost.slug}`} className="group max-w-[45%] text-left">
-                  <span className="block text-xs font-semibold text-accent uppercase tracking-wider">Previous</span>
-                  <span className="mt-1 block text-sm font-medium text-text group-hover:text-primary line-clamp-1 transition">
-                    ← {previousPost.title}
-                  </span>
-                </Link>
-              ) : (
-                <div />
-              )}
+            {/* Article navigation */}
+            <nav aria-label="Article navigation" className="mt-12 flex justify-end border-t border-slate-200/40 dark:border-white/10 pt-6">
+              <div className="flex w-full max-w-xl flex-row gap-2 sm:gap-3 sm:justify-end">
+                {previousPost && (
+                  <Link
+                    to={`/blog/${previousPost.slug}`}
+                    aria-label={`Read previous article: ${previousPost.title}`}
+                    className="group min-w-0 flex-1 rounded-xl border border-slate-200/60 bg-slate-100/30 px-4 py-3 text-left transition hover:-translate-y-0.5 hover:border-primary/40 hover:bg-primary/5 dark:border-white/10 dark:bg-white/5"
+                  >
+                    <span className="block text-[11px] font-bold uppercase tracking-wider text-accent">Previous article</span>
+                    <span className="mt-1 block min-h-8 line-clamp-2 text-xs leading-4 font-semibold text-text transition group-hover:text-primary sm:text-sm sm:leading-5">
+                      ← {previousPost.title}
+                    </span>
+                  </Link>
+                )}
 
-              {nextPost ? (
-                <Link to={`/blog/${nextPost.slug}`} className="group max-w-[45%] text-right ml-auto">
-                  <span className="block text-xs font-semibold text-accent uppercase tracking-wider">Next</span>
-                  <span className="mt-1 block text-sm font-medium text-text group-hover:text-primary line-clamp-1 transition">
-                    {nextPost.title} →
-                  </span>
-                </Link>
-              ) : (
-                <div />
-              )}
-            </div>
+                {nextPost && (
+                  <Link
+                    to={`/blog/${nextPost.slug}`}
+                    aria-label={`Read next article: ${nextPost.title}`}
+                    className="group min-w-0 flex-1 rounded-xl border border-primary/25 bg-primary/5 px-4 py-3 text-right transition hover:-translate-y-0.5 hover:border-primary/50 hover:bg-primary/10"
+                  >
+                    <span className="block text-[11px] font-bold uppercase tracking-wider text-accent">Next article</span>
+                    <span className="mt-1 block min-h-8 line-clamp-2 text-xs leading-4 font-semibold text-text transition group-hover:text-primary sm:text-sm sm:leading-5">
+                      {nextPost.title} →
+                    </span>
+                  </Link>
+                )}
+              </div>
+            </nav>
           </div>
 
           {/* Sticky Sidebar */}
@@ -207,7 +219,7 @@ export default function BlogPost() {
             <div className="rounded-2xl border border-slate-200/60 dark:border-white/10 bg-slate-100/30 dark:bg-white/5 p-5 backdrop-blur-md">
               <p className="text-xs font-bold uppercase tracking-wider text-accent">More in {post.category}</p>
               <ol className="mt-3 space-y-2.5 text-xs sm:text-sm">
-                {categoryPosts.map((item, index) => (
+                {navigationPosts.map((item, index) => (
                   <li key={item.slug}>
                     <Link
                       to={`/blog/${item.slug}`}

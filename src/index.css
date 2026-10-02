@@ -5,6 +5,29 @@
 html {
   scroll-behavior: smooth;
   transition: background-color 0.5s ease, color 0.5s ease;
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-primary) transparent;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  border: 2px solid transparent;
+  border-radius: 999px;
+  background: linear-gradient(180deg, var(--color-primary), #3b82f6 52%, var(--color-accent));
+  background-clip: padding-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, var(--color-secondary), var(--color-primary) 52%, var(--color-accent));
+  background-clip: padding-box;
 }
 /* :root {
   --color-background: #ffffff;

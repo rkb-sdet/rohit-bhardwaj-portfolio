@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import ReactMarkdown from "react-markdown";
 import type { Components } from "react-markdown";
@@ -13,6 +13,7 @@ function slugify(value: string) {
 export default function TechnologyPage() {
   const { technology: technologySlug = "", slug } = useParams<{ technology: string; slug?: string }>();
   const navigate = useNavigate();
+  const [isIndexOpen, setIsIndexOpen] = useState(false);
   const technology = getTechnologyFromSlug(technologySlug);
   const posts = useMemo(() => blogPosts
     .filter((post) => post.technology === technology)
@@ -24,6 +25,9 @@ export default function TechnologyPage() {
       return second.date.localeCompare(first.date);
     }), [technology]);
   const selectedPost = posts.find((post) => post.slug === slug) ?? posts[0];
+  const selectedIndex = selectedPost ? posts.findIndex((post) => post.slug === selectedPost.slug) : -1;
+  const previousPost = selectedIndex > 0 ? posts[selectedIndex - 1] : undefined;
+  const nextPost = selectedIndex >= 0 && selectedIndex < posts.length - 1 ? posts[selectedIndex + 1] : undefined;
 
   useEffect(() => {
     if (technology) document.title = `${technology} Blog | Rohit Bhardwaj`;
@@ -101,10 +105,8 @@ export default function TechnologyPage() {
           {/* Left Sidebar Index */}
           <aside className="lg:sticky lg:top-24 lg:h-fit">
             {/* Desktop View */}
-            <div className="hidden rounded-2xl border border-slate-200/60 dark:border-white/10 bg-slate-100/30 dark:bg-white/5 p-5 backdrop-blur-md lg:block">
-              <p className="text-xs font-bold uppercase tracking-wider text-accent mb-4">
-                {technology} Index
-              </p>
+            <div className="hidden rounded-2xl border border-primary/15 border-l-4 border-l-primary/60 bg-background/55 p-5 shadow-sm backdrop-blur-md lg:block">
+              <p className="mb-4 text-xs font-bold uppercase tracking-wider text-accent">{technology} Index</p>
               <div className="space-y-1.5">
                 {posts.map((post, index) => {
                   const isActive = selectedPost.slug === post.slug;
@@ -130,10 +132,14 @@ export default function TechnologyPage() {
             </div>
 
             {/* Mobile View Accordion */}
-            <details className="rounded-2xl border border-slate-200/60 dark:border-white/10 bg-slate-100/30 dark:bg-white/5 p-4 backdrop-blur-md lg:hidden">
-              <summary className="cursor-pointer list-none text-xs font-bold uppercase tracking-wider text-accent flex justify-between items-center">
+            <details
+              open={isIndexOpen}
+              onToggle={(event) => setIsIndexOpen(event.currentTarget.open)}
+              className="group rounded-2xl border border-primary/20 border-l-4 border-l-primary/60 bg-background/65 p-4 shadow-sm backdrop-blur-md lg:hidden"
+            >
+              <summary className="relative flex cursor-pointer list-none items-center pr-8 text-xs font-bold uppercase tracking-wider text-accent">
                 <span>{technology} Index</span>
-                <span className="text-primary text-sm">⌄</span>
+                <span aria-hidden="true" className="absolute right-1 top-1/2 h-2.5 w-2.5 -translate-y-1/2 rotate-45 border-b-2 border-r-2 border-primary transition-transform duration-300 group-open:-rotate-[135deg]" />
               </summary>
               <div className="mt-4 space-y-1.5 border-t border-slate-200/40 dark:border-white/10 pt-3">
                 {posts.map((post, index) => {
@@ -142,7 +148,10 @@ export default function TechnologyPage() {
                     <button
                       key={post.slug}
                       type="button"
-                      onClick={() => navigate(`/blog/technology/${getTechnologySlug(technology)}/${post.slug}`)}
+                      onClick={() => {
+                        setIsIndexOpen(false);
+                        navigate(`/blog/technology/${getTechnologySlug(technology)}/${post.slug}`);
+                      }}
                       className={`flex w-full items-start gap-2.5 rounded-xl px-3 py-2 text-left text-xs font-medium transition-all ${
                         isActive
                           ? "bg-primary text-white"
@@ -203,6 +212,36 @@ export default function TechnologyPage() {
                 <span>↗</span>
               </Link>
             </div>
+
+            <nav aria-label="Article navigation" className="mt-8 flex justify-end border-t border-slate-200/40 dark:border-white/10 pt-6">
+              <div className="flex w-full max-w-xl flex-row gap-2 sm:gap-3 sm:justify-end">
+                {previousPost && (
+                  <button
+                    type="button"
+                    onClick={() => navigate(`/blog/technology/${getTechnologySlug(technology)}/${previousPost.slug}`)}
+                    className="group min-w-0 flex-1 rounded-xl border border-slate-200/60 bg-slate-100/30 px-4 py-3 text-left transition hover:-translate-y-0.5 hover:border-primary/40 hover:bg-primary/5 dark:border-white/10 dark:bg-white/5"
+                  >
+                    <span className="block text-[11px] font-bold uppercase tracking-wider text-accent">Previous article</span>
+                    <span className="mt-1 block min-h-8 line-clamp-2 text-xs leading-4 font-semibold text-text transition group-hover:text-primary sm:text-sm sm:leading-5">
+                      ← {previousPost.title}
+                    </span>
+                  </button>
+                )}
+
+                {nextPost && (
+                  <button
+                    type="button"
+                    onClick={() => navigate(`/blog/technology/${getTechnologySlug(technology)}/${nextPost.slug}`)}
+                    className="group min-w-0 flex-1 rounded-xl border border-primary/25 bg-primary/5 px-4 py-3 text-right transition hover:-translate-y-0.5 hover:border-primary/50 hover:bg-primary/10"
+                  >
+                    <span className="block text-[11px] font-bold uppercase tracking-wider text-accent">Next article</span>
+                    <span className="mt-1 block min-h-8 line-clamp-2 text-xs leading-4 font-semibold text-text transition group-hover:text-primary sm:text-sm sm:leading-5">
+                      {nextPost.title} →
+                    </span>
+                  </button>
+                )}
+              </div>
+            </nav>
           </article>
         </div>
       </div>
